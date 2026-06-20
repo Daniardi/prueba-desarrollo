@@ -1,5 +1,9 @@
+using System.Text.Json.Serialization;
+using CourierMax.Api.Api;
+
 namespace CourierMax.Api.Domain;
 
+[JsonConverter(typeof(SpanishEnumConverter<PackageType>))]
 public enum PackageType
 {
     Document,
@@ -8,6 +12,7 @@ public enum PackageType
     Perishable
 }
 
+[JsonConverter(typeof(SpanishEnumConverter<ServiceType>))]
 public enum ServiceType
 {
     Standard,
@@ -15,6 +20,7 @@ public enum ServiceType
     SameDay
 }
 
+[JsonConverter(typeof(SpanishEnumConverter<ShipmentStatus>))]
 public enum ShipmentStatus
 {
     Created,

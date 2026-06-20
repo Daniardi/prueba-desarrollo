@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace CourierMax.Api.Domain;
 
 public sealed record Contact(string Name, string Phone, string Address);
@@ -44,11 +46,11 @@ public sealed class Vehicle
 }
 
 public sealed record StatusChange(
-    ShipmentStatus PreviousStatus,
-    ShipmentStatus NewStatus,
-    DateTimeOffset ChangedAt,
-    string ChangedBy,
-    string? Reason);
+    [property: JsonPropertyName("estadoAnterior")] ShipmentStatus PreviousStatus,
+    [property: JsonPropertyName("estadoNuevo")] ShipmentStatus NewStatus,
+    [property: JsonPropertyName("fechaCambio")] DateTimeOffset ChangedAt,
+    [property: JsonPropertyName("modificadoPor")] string ChangedBy,
+    [property: JsonPropertyName("motivo")] string? Reason);
 
 public sealed class Shipment
 {

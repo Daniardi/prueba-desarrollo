@@ -67,24 +67,24 @@ Conductores y vehiculos:
 curl -X POST http://localhost:5000/api/shipments \
   -H "Content-Type: application/json" \
   -d '{
-    "sender": {
-      "name": "Laura Gomez",
-      "phone": "3001234567",
-      "address": "Calle 1 # 2-3"
+    "remitente": {
+      "nombre": "Laura Gomez",
+      "telefono": "3001234567",
+      "direccion": "Calle 1 # 2-3"
     },
-    "recipient": {
-      "name": "Andres Ruiz",
-      "phone": "6012345678",
-      "address": "Carrera 4 # 5-6"
+    "destinatario": {
+      "nombre": "Andres Ruiz",
+      "telefono": "6012345678",
+      "direccion": "Carrera 4 # 5-6"
     },
-    "package": {
-      "weightKg": 5,
-      "dimensions": { "lengthCm": 30, "widthCm": 20, "heightCm": 15 },
-      "type": "Fragile"
+    "paquete": {
+      "pesoKg": 5,
+      "dimensiones": { "largoCm": 30, "anchoCm": 20, "altoCm": 15 },
+      "tipo": "Fragil"
     },
-    "serviceType": "Express",
-    "originCity": "Bogota",
-    "destinationCity": "Medellin"
+    "tipoServicio": "Express",
+    "ciudadOrigen": "Bogota",
+    "ciudadDestino": "Medellin"
   }'
 ```
 
@@ -97,7 +97,7 @@ Si `driverId` es `null`, el sistema selecciona el conductor activo cuyo vehiculo
 ```bash
 curl -X POST http://localhost:5000/api/shipments/{shipmentId}/assign \
   -H "Content-Type: application/json" \
-  -d '{ "driverId": null, "changedBy": "dispatcher-1" }'
+  -d '{ "conductorId": null, "modificadoPor": "dispatcher-1" }'
 ```
 
 ### Cambiar estado
@@ -105,7 +105,7 @@ curl -X POST http://localhost:5000/api/shipments/{shipmentId}/assign \
 ```bash
 curl -X PATCH http://localhost:5000/api/shipments/{shipmentId}/status \
   -H "Content-Type: application/json" \
-  -d '{ "newStatus": "InTransit", "changedBy": "driver-1" }'
+  -d '{ "nuevoEstado": "EnTransito", "modificadoPor": "driver-1" }'
 ```
 
 Cancelar requiere motivo de minimo 5 caracteres:
@@ -114,16 +114,16 @@ Cancelar requiere motivo de minimo 5 caracteres:
 curl -X PATCH http://localhost:5000/api/shipments/{shipmentId}/status \
   -H "Content-Type: application/json" \
   -d '{
-    "newStatus": "Cancelled",
-    "changedBy": "dispatcher-1",
-    "reason": "Cliente cancela solicitud"
+    "nuevoEstado": "Cancelado",
+    "modificadoPor": "dispatcher-1",
+    "motivo": "Cliente cancela solicitud"
   }'
 ```
 
 ### Consultar envios atrasados
 
 ```bash
-curl "http://localhost:5000/api/shipments/late?from=2026-06-01&to=2026-06-30"
+curl "http://localhost:5000/api/shipments/late?fechaDesde=2026-06-01&fechaHasta=2026-06-30"
 ```
 
 ### Metricas por conductor
