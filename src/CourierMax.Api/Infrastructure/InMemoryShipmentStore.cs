@@ -10,6 +10,7 @@ public interface IShipmentStore
     Shipment? GetById(Guid id);
     Shipment? GetByTrackingCode(string trackingCode);
     void Add(Shipment shipment);
+    void Update(Shipment shipment);
 }
 
 public sealed class InMemoryShipmentStore : IShipmentStore
@@ -38,5 +39,10 @@ public sealed class InMemoryShipmentStore : IShipmentStore
         {
             throw new AppException(StatusCodes.Status409Conflict, "Ya existe un envio con el mismo identificador.");
         }
+    }
+
+    public void Update(Shipment shipment)
+    {
+        _shipments[shipment.Id] = shipment;
     }
 }

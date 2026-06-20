@@ -1,6 +1,7 @@
 using CourierMax.Api.Api;
 using CourierMax.Api.Infrastructure;
 using CourierMax.Api.Services;
+using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,13 +13,23 @@ builder.Services.ConfigureHttpJsonOptions(options =>
     options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
 builder.Services.AddSingleton(TimeProvider.System);
-builder.Services.AddSingleton<IReferenceData, ReferenceData>();
-builder.Services.AddSingleton<IShipmentStore, InMemoryShipmentStore>();
-builder.Services.AddSingleton<IPricingService, PricingService>();
+var connectionString = builder.Configuration.GetConnectionString("CourierMax")
+    ?? throw new InvalidOperationException("No se configuro la conexion CourierMax.");
+builder.Services.AddDbContext<CourierMaxDbContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddScoped<IReferenceData, DatabaseReferenceData>();
+builder.Services.AddScoped<IShipmentStore, SqlShipmentStore>();
+builder.Services.AddScoped<IPricingService, PricingService>();
 builder.Services.AddSingleton<IBusinessCalendar, ColombianBusinessCalendar>();
-builder.Services.AddSingleton<IShipmentService, ShipmentService>();
+builder.Services.AddScoped<IShipmentService, ShipmentService>();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var database = scope.ServiceProvider.GetRequiredService<CourierMaxDbContext>();
+    database.Database.EnsureCreated();
+    DatabaseSeeder.Seed(database);
+}
 
 app.UseMiddleware<ErrorHandlingMiddleware>();
 

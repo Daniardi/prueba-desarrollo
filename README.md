@@ -7,7 +7,7 @@ API REST para gestionar el ciclo de vida de envios de CourierMax: creacion, asig
 - .NET 8
 - ASP.NET Core Minimal APIs
 - Swagger/OpenAPI con Swashbuckle
-- Almacenamiento en memoria
+- SQL Server LocalDB y Entity Framework Core
 - xUnit para pruebas automatizadas
 
 ## Arquitectura
@@ -16,16 +16,17 @@ La solucion usa una arquitectura por capas simple:
 
 - `Domain`: entidades, enums y objetos de valor del negocio.
 - `Services`: reglas de negocio, validaciones, calculo de tarifas, SLA, transiciones de estado y metricas.
-- `Infrastructure`: almacenamiento en memoria.
+- `Infrastructure`: persistencia en SQL Server mediante Entity Framework Core.
 - `Api`: contratos HTTP, endpoints y manejo centralizado de errores.
 
-Se eligio almacenamiento en memoria porque la prueba evalua principalmente diseno, reglas de negocio y calidad de API. La separacion por interfaces permite reemplazar `InMemoryShipmentStore` por EF Core o Dapper sin cambiar los endpoints ni la logica principal.
+La base `CourierMaxDb`, sus tablas y los datos iniciales se crean automaticamente al iniciar la API.
 
 ## Ejecutar localmente
 
 Requisitos:
 
 - .NET SDK 8 o superior.
+- SQL Server LocalDB en `(localdb)\MSSQLLocalDB`.
 
 ```powershell
 dotnet restore CourierMax.slnx

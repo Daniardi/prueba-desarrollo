@@ -97,6 +97,7 @@ public sealed partial class ShipmentService(
         EnsureVehicleCapacity(vehicle, shipment);
 
         shipment.Assign(driver.Id, vehicle.Id, timeProvider.GetUtcNow(), request.ChangedBy);
+        store.Update(shipment);
         return shipment;
     }
 
@@ -110,6 +111,7 @@ public sealed partial class ShipmentService(
         var shipment = Get(shipmentId);
         EnsureTransition(shipment.Status, request.NewStatus, request.Reason);
         shipment.ChangeStatus(request.NewStatus, timeProvider.GetUtcNow(), request.ChangedBy, request.Reason);
+        store.Update(shipment);
         return shipment;
     }
 

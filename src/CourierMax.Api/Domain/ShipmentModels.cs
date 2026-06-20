@@ -119,4 +119,23 @@ public sealed class Shipment
 
         History.Add(new StatusChange(previous, newStatus, changedAt, changedBy, reason));
     }
+
+    public void RestoreState(
+        ShipmentStatus status,
+        int? driverId,
+        int? vehicleId,
+        int? lastAssignedDriverId,
+        DateTimeOffset? assignedAt,
+        DateTimeOffset? deliveredAt,
+        IEnumerable<StatusChange> history)
+    {
+        Status = status;
+        DriverId = driverId;
+        VehicleId = vehicleId;
+        LastAssignedDriverId = lastAssignedDriverId;
+        AssignedAt = assignedAt;
+        DeliveredAt = deliveredAt;
+        History.Clear();
+        History.AddRange(history);
+    }
 }
