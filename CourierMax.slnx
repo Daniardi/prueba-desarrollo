@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/CourierMax.Api/CourierMax.Api.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/CourierMax.Tests/CourierMax.Tests.csproj" />
+  </Folder>
+</Solution>
