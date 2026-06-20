@@ -64,7 +64,7 @@ Conductores y vehiculos:
 ### Crear envio
 
 ```bash
-curl -X POST http://localhost:5000/api/shipments \
+curl -X POST http://localhost:5000/api/envios \
   -H "Content-Type: application/json" \
   -d '{
     "remitente": {
@@ -95,7 +95,7 @@ Respuesta esperada: `201 Created`, codigo `CM-XXXXXXXX`, estado `Created` y tari
 Si `driverId` es `null`, el sistema selecciona el conductor activo cuyo vehiculo tenga menor carga actual y capacidad disponible.
 
 ```bash
-curl -X POST http://localhost:5000/api/shipments/{shipmentId}/assign \
+curl -X POST http://localhost:5000/api/envios/{envioId}/asignar \
   -H "Content-Type: application/json" \
   -d '{ "conductorId": null, "modificadoPor": "dispatcher-1" }'
 ```
@@ -103,7 +103,7 @@ curl -X POST http://localhost:5000/api/shipments/{shipmentId}/assign \
 ### Cambiar estado
 
 ```bash
-curl -X PATCH http://localhost:5000/api/shipments/{shipmentId}/status \
+curl -X PATCH http://localhost:5000/api/envios/{envioId}/estado \
   -H "Content-Type: application/json" \
   -d '{ "nuevoEstado": "EnTransito", "modificadoPor": "driver-1" }'
 ```
@@ -111,7 +111,7 @@ curl -X PATCH http://localhost:5000/api/shipments/{shipmentId}/status \
 Cancelar requiere motivo de minimo 5 caracteres:
 
 ```bash
-curl -X PATCH http://localhost:5000/api/shipments/{shipmentId}/status \
+curl -X PATCH http://localhost:5000/api/envios/{envioId}/estado \
   -H "Content-Type: application/json" \
   -d '{
     "nuevoEstado": "Cancelado",
@@ -123,19 +123,19 @@ curl -X PATCH http://localhost:5000/api/shipments/{shipmentId}/status \
 ### Consultar envios atrasados
 
 ```bash
-curl "http://localhost:5000/api/shipments/late?fechaDesde=2026-06-01&fechaHasta=2026-06-30"
+curl "http://localhost:5000/api/envios/atrasados?fechaDesde=2026-06-01&fechaHasta=2026-06-30"
 ```
 
 ### Metricas por conductor
 
 ```bash
-curl http://localhost:5000/api/drivers/1/metrics
+curl http://localhost:5000/api/conductores/1/metricas
 ```
 
 ### Carga de vehiculos
 
 ```bash
-curl http://localhost:5000/api/vehicles/load
+curl http://localhost:5000/api/vehiculos/carga
 ```
 
 ## Reglas implementadas
