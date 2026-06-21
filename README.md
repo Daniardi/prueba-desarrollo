@@ -46,8 +46,7 @@ dotnet run --project src\CourierMax.Api\CourierMax.Api.csproj
 Swagger queda disponible en:
 
 ```text
-http://localhost:5000/swagger
-https://localhost:5001/swagger
+http://localhost:5088/swagger
 ```
 
 El puerto exacto puede variar segun `launchSettings.json`; la consola de `dotnet run` muestra la URL activa.
@@ -72,7 +71,7 @@ Conductores y vehiculos:
 ### Crear envio
 
 ```bash
-curl -X POST http://localhost:5000/api/envios \
+curl -X POST http://localhost:5088/api/envios \
   -H "Content-Type: application/json" \
   -d '{
     "remitente": {
@@ -103,7 +102,7 @@ Respuesta esperada: `201 Created`, codigo `CM-XXXXXXXX`, estado `Created` y tari
 Si `driverId` es `null`, el sistema selecciona el conductor activo cuyo vehiculo tenga menor carga actual y capacidad disponible.
 
 ```bash
-curl -X POST http://localhost:5000/api/envios/{envioId}/asignar \
+curl -X POST http://localhost:5088/api/envios/{envioId}/asignar \
   -H "Content-Type: application/json" \
   -d '{ "conductorId": null, "modificadoPor": "dispatcher-1" }'
 ```
@@ -111,7 +110,7 @@ curl -X POST http://localhost:5000/api/envios/{envioId}/asignar \
 ### Cambiar estado
 
 ```bash
-curl -X PATCH http://localhost:5000/api/envios/{envioId}/estado \
+curl -X PATCH http://localhost:5088/api/envios/{envioId}/estado \
   -H "Content-Type: application/json" \
   -d '{ "nuevoEstado": "EnTransito", "modificadoPor": "driver-1" }'
 ```
@@ -119,7 +118,7 @@ curl -X PATCH http://localhost:5000/api/envios/{envioId}/estado \
 Cancelar requiere motivo de minimo 5 caracteres:
 
 ```bash
-curl -X PATCH http://localhost:5000/api/envios/{envioId}/estado \
+curl -X PATCH http://localhost:5088/api/envios/{envioId}/estado \
   -H "Content-Type: application/json" \
   -d '{
     "nuevoEstado": "Cancelado",
@@ -131,31 +130,31 @@ curl -X PATCH http://localhost:5000/api/envios/{envioId}/estado \
 ### Consultar envios atrasados
 
 ```bash
-curl "http://localhost:5000/api/envios/atrasados?fechaDesde=2026-06-01&fechaHasta=2026-06-30"
+curl "http://localhost:5088/api/envios/atrasados?fechaDesde=2026-06-01&fechaHasta=2026-06-30"
 ```
 
 ### Metricas por conductor
 
 ```bash
-curl http://localhost:5000/api/conductores/1/metricas
+curl http://localhost:5088/api/conductores/1/metricas
 ```
 
 ### Carga de vehiculos
 
 ```bash
-curl http://localhost:5000/api/vehiculos/carga
+curl http://localhost:5088/api/vehiculos/carga
 ```
 
 ## Reglas implementadas
 
-- Telefonos colombianos de 10 digitos que inician en 3 o 6.
+- Telefono colombianos de 10 digitos que inician en 3 o 6.
 - Peso entre 0.1 kg y 100 kg.
 - Dimensiones entre 1 cm y 200 cm por lado.
 - Ciudades restringidas a la lista de referencia.
 - Codigo de rastreo unico con formato `CM-XXXXXXXX`.
 - Flujo de estados: `Created -> Assigned -> InTransit -> Delivered`.
 - Cancelacion desde cualquier estado excepto `Delivered`.
-- Historial de cambios con estado anterior/nuevo, fecha, actor y motivo.
+- Historial de cambios con estaod anterior/nuevo, fecha, actor y motivo.
 - Capacidad por peso y volumen calculada en tiempo real.
 - Liberacion de capacidad al cancelar.
 - Tarifa base, recargo por peso, distancia y tipo de paquete.
