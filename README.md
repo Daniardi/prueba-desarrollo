@@ -19,6 +19,14 @@ La solucion usa una arquitectura por capas simple:
 - `Infrastructure`: persistencia en SQL Server mediante Entity Framework Core.
 - `Api`: contratos HTTP, endpoints y manejo centralizado de errores.
 
+### Justificacion de las decisiones
+
+- **Minimal API:** se eligio porque el proyecto tiene una cantidad manejable de endpoints y permite definirlos de forma clara sin agregar estructura innecesaria.
+- **Separacion por capas:** mantiene independientes la comunicacion HTTP, las reglas de negocio y el acceso a datos. Esto facilita entender y modificar cada parte.
+- **Interfaces:** permiten cambiar una implementacion sin afectar directamente la logica de negocio. Tambien facilitan las pruebas al poder usar almacenamiento en memoria.
+- **Entity Framework Core:** simplifica la conexion y las operaciones con SQL Server, evitando escribir manualmente la mayoria de las consultas.
+- **SQL Server LocalDB:** permite ejecutar el proyecto localmente con una base de datos real, sin necesitar configurar un servidor externo.
+
 La base `CourierMaxDb`, sus tablas y los datos iniciales se crean automaticamente al iniciar la API.
 
 ## Ejecutar localmente
