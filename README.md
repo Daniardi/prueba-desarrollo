@@ -47,6 +47,7 @@ Swagger queda disponible en:
 
 ```text
 http://localhost:5088/swagger
+http://localhost:5000/swagger
 ```
 
 El puerto exacto puede variar segun `launchSettings.json`; la consola de `dotnet run` muestra la URL activa.
